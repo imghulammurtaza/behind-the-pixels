@@ -166,8 +166,10 @@ export function SiteFooter() {
                         : item === "Contacts"
                           ? "/contact"
                           : item === "Testimonials"
-                            ? "/#testimonials"
-                            : "/#"
+                            ? "/testimonials"
+                            : item === "Process"
+                              ? "/process"
+                              : "/#"
                     }
                   >
                     {item}

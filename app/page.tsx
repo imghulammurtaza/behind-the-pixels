@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ContactSection } from "./components/ContactSection";
 import { GlitchHeadline } from "./components/GlitchHeadline";
 import { HeroHeader } from "./components/HeroHeader";
+import { HomeVideo } from "./components/HomeVideo";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { ServicesSection } from "./components/ServicesSection";
 import { SiteFooter } from "./components/SiteFooter";
@@ -11,16 +12,16 @@ import { TestimonialsSection } from "./components/TestimonialsSection";
 export default function Home() {
   return (
     <>
-      <section className="hero-bg relative flex min-h-dvh flex-col">
+      <section className="hero-bg relative flex h-dvh max-h-dvh flex-col overflow-hidden">
         <HeroHeader />
 
-        <main className="relative z-10 flex flex-1 flex-col items-center px-6 pb-32 pt-[4.75rem] sm:pt-24 md:pt-28">
+        <main className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center px-6 pb-[5.5rem] pt-16 sm:pb-24 sm:pt-20">
           <GlitchHeadline />
 
           <button
             type="button"
             aria-label="Click me"
-            className="anim-computer group relative mt-3 w-full max-w-[min(78vw,420px)] cursor-pointer border-0 bg-transparent p-0 sm:mt-5 sm:max-w-[min(92vw,580px)] md:mt-6"
+            className="anim-computer group relative mt-2 w-full max-w-[min(68vw,340px)] cursor-pointer border-0 bg-transparent p-0 sm:mt-3 sm:max-w-[min(52vw,380px)] md:max-w-[min(42vw,400px)]"
           >
             <Image
               src="/retro-computer.png"
@@ -28,13 +29,13 @@ export default function Home() {
               width={729}
               height={676}
               priority
-              className="h-auto w-full drop-shadow-[0_24px_48px_rgba(70,50,30,0.16)] transition-transform duration-500 group-hover:scale-[1.015] group-active:scale-[0.99]"
+              className="hero-computer-img h-auto w-full drop-shadow-[0_24px_48px_rgba(70,50,30,0.16)] transition-transform duration-500 group-hover:scale-[1.015] group-active:scale-[0.99]"
             />
           </button>
         </main>
 
         <nav
-          className="anim-bar absolute inset-x-0 bottom-5 z-30 mx-auto flex w-[min(92vw,360px)] items-center justify-between rounded-full border border-white/80 bg-white/80 px-3.5 py-2.5 shadow-[0_8px_36px_rgba(0,0,0,0.1)] backdrop-blur-[16px] sm:bottom-7 sm:w-[min(92vw,380px)] sm:px-4 sm:py-3"
+          className="anim-bar absolute inset-x-0 bottom-4 z-30 mx-auto flex w-[min(92vw,360px)] items-center justify-between rounded-full border border-white/80 bg-white/80 px-3.5 py-2.5 shadow-[0_8px_36px_rgba(0,0,0,0.1)] backdrop-blur-[16px] sm:bottom-6 sm:w-[min(92vw,380px)] sm:px-4 sm:py-3"
           aria-label="Primary"
         >
           <a href="/" className="flex items-center pl-1" aria-label="Home">
@@ -54,6 +55,8 @@ export default function Home() {
           </a>
         </nav>
       </section>
+
+      <HomeVideo />
 
       <ProjectsSection />
       <div data-reveal="scale">

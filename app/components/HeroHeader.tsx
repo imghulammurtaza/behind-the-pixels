@@ -8,7 +8,8 @@ const LINKS = [
   { label: "Projects", href: "/#projects" },
   { label: "Stories", href: "/#stories" },
   { label: "Services", href: "/#services" },
-  { label: "Testimonials", href: "/#testimonials" },
+  { label: "Process", href: "/process" },
+  { label: "Testimonials", href: "/testimonials" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -169,13 +170,22 @@ export function HeroHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
 
   return (
     <>
-      <header className="anim-nav absolute inset-x-0 top-0 z-20 flex items-start justify-between px-6 pt-7 sm:px-10 sm:pt-9 md:px-14 lg:px-16">
-        <a href="/contact" className={chrome}>
+      <header className="anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 pt-7 sm:px-10 sm:pt-9 md:px-14 lg:px-16">
+        <a href="/contact" className={`${chrome} justify-self-start`}>
           Let&apos;s Talk
+        </a>
+        <a
+          href="/"
+          className={`site-logo ${tone === "dark" ? "site-logo-dark" : "site-logo-light"}`}
+          aria-label="Behind the Pixels — Home"
+        >
+          <span className="site-logo-word" aria-hidden="true">
+            Behind the Pixels
+          </span>
         </a>
         <button
           type="button"
-          className={`cursor-pointer border-0 bg-transparent p-0 ${chrome}`}
+          className={`cursor-pointer justify-self-end border-0 bg-transparent p-0 ${chrome}`}
           aria-expanded={open}
           aria-controls="site-menu"
           onClick={() => setOpen(true)}

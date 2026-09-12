@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Figtree } from "next/font/google";
+import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import { RevealInit } from "./components/RevealInit";
 import "./globals.css";
 
-const figtree = Figtree({
-  variable: "--font-figtree",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -16,7 +22,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${figtree.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${montserrat.variable} ${cormorant.variable} antialiased`}
+    >
       <body className="min-h-dvh font-sans">
         <RevealInit />
         {children}

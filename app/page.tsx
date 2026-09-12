@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ContactSection } from "./components/ContactSection";
 import { GlitchHeadline } from "./components/GlitchHeadline";
+import { HeroComputer } from "./components/HeroComputer";
 import { HeroHeader } from "./components/HeroHeader";
 import { HomeVideo } from "./components/HomeVideo";
 import { ProjectsSection } from "./components/ProjectsSection";
@@ -15,23 +16,12 @@ export default function Home() {
       <section className="hero-bg relative flex h-dvh max-h-dvh flex-col overflow-hidden">
         <HeroHeader />
 
-        <main className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center px-6 pb-[5.5rem] pt-16 sm:pb-24 sm:pt-20">
-          <GlitchHeadline />
+        <main className="relative z-10 flex min-h-0 flex-1 flex-col items-center px-6 pb-[5.75rem] pt-14 sm:pb-24 sm:pt-16">
+          <div className="mt-[min(4vh,1.5rem)] shrink-0 sm:mt-[min(5vh,2rem)]">
+            <GlitchHeadline />
+          </div>
 
-          <button
-            type="button"
-            aria-label="Click me"
-            className="anim-computer group relative mt-2 w-full max-w-[min(68vw,340px)] cursor-pointer border-0 bg-transparent p-0 sm:mt-3 sm:max-w-[min(52vw,380px)] md:max-w-[min(42vw,400px)]"
-          >
-            <Image
-              src="/retro-computer.png"
-              alt="Vintage computer showing Behind the Pixels"
-              width={729}
-              height={676}
-              priority
-              className="hero-computer-img h-auto w-full drop-shadow-[0_24px_48px_rgba(70,50,30,0.16)] transition-transform duration-500 group-hover:scale-[1.015] group-active:scale-[0.99]"
-            />
-          </button>
+          <HeroComputer />
         </main>
 
         <nav
@@ -49,7 +39,7 @@ export default function Home() {
           </a>
           <a
             href="#projects"
-            className="inline-flex items-center justify-center rounded-[14px] bg-[#1a1a1a] px-5 py-2.5 text-[14px] font-medium tracking-[-0.01em] text-white transition-colors hover:bg-black sm:px-6 sm:py-3 sm:text-[15px]"
+            className="inline-flex items-center justify-center rounded-[14px] bg-[#1a1a1a] px-5 py-2.5 text-[14px] font-normal tracking-[-0.01em] text-white transition-colors hover:bg-black sm:px-6 sm:py-3 sm:text-[15px]"
           >
             Start Project
           </a>

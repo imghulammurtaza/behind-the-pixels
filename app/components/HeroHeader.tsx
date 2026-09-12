@@ -95,8 +95,8 @@ export function HeroHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
   const [mounted, setMounted] = useState(false);
   const chrome =
     tone === "dark"
-      ? "text-[15px] font-medium tracking-[-0.01em] text-white/75 transition-opacity hover:text-white hover:opacity-100"
-      : "text-[15px] font-medium tracking-[-0.01em] text-black transition-opacity hover:opacity-55";
+      ? "text-[15px] font-normal tracking-[-0.01em] text-white/75 transition-opacity hover:text-white hover:opacity-100"
+      : "text-[15px] font-normal tracking-[-0.01em] text-black transition-opacity hover:opacity-55";
 
   useEffect(() => {
     setMounted(true);

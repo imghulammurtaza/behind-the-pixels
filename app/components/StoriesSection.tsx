@@ -49,28 +49,43 @@ const FEATURE_THUMBS = [
   PORTRAITS[5],
 ] as const;
 
+/** px drag ≈ one card step */
+const DRAG_STEP = 92;
+
 function cardTransform(offset: number, compact = false) {
   const abs = Math.abs(offset);
   const rotateY = offset * (compact ? -18 : -28);
   const translateX = offset * (compact ? 78 : 118);
   const translateZ = -abs * (compact ? 60 : 90);
-  const scale = Math.max(compact ? 0.78 : 0.72, 1 - abs * (compact ? 0.1 : 0.12));
-  const opacity = Math.max(0.35, 1 - abs * 0.18);
+  const scale = Math.max(
+    compact ? 0.78 : 0.72,
+    1 - abs * (compact ? 0.1 : 0.12),
+  );
+  const opacity = Math.max(0.28, 1 - abs * 0.18);
   return {
     transform: `translateX(${translateX}%) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
     opacity,
-    zIndex: 40 - abs,
+    zIndex: Math.round(40 - abs * 10),
   };
 }
 
 export function StoriesSection() {
   const [active, setActive] = useState(4);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [dragging, setDragging] = useState(false);
   const [compact, setCompact] = useState(false);
-  const dragRef = useRef<{ x: number; active: number } | null>(null);
+  const dragRef = useRef<{
+    pointerId: number;
+    startX: number;
+    origin: number;
+    moved: boolean;
+  } | null>(null);
+  const suppressClickRef = useRef(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const go = useCallback((next: number) => {
     setActive(((next % STORIES.length) + STORIES.length) % STORIES.length);
+    setDragOffset(0);
   }, []);
 
   useEffect(() => {
@@ -82,24 +97,70 @@ export function StoriesSection() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") go(active - 1);
-      if (e.key === "ArrowRight") go(active + 1);
+      const root = trackRef.current;
+      if (!root) return;
+      if (
+        !root.contains(document.activeElement) &&
+        document.activeElement !== root
+      )
+        return;
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        go(active - 1);
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        go(active + 1);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [active, go]);
 
-  const onPointerDown = (e: ReactPointerEvent) => {
-    dragRef.current = { x: e.clientX, active };
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+  const endDrag = (clientX: number) => {
+    const drag = dragRef.current;
+    if (!drag) return;
+    const dx = clientX - drag.startX;
+    const steps = Math.round(-dx / DRAG_STEP);
+    if (drag.moved || steps !== 0) suppressClickRef.current = true;
+    dragRef.current = null;
+    setDragging(false);
+    if (steps !== 0) go(drag.origin + steps);
+    else setDragOffset(0);
   };
 
-  const onPointerUp = (e: ReactPointerEvent) => {
-    if (!dragRef.current) return;
-    const dx = e.clientX - dragRef.current.x;
-    if (dx > 48) go(dragRef.current.active - 1);
-    else if (dx < -48) go(dragRef.current.active + 1);
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    suppressClickRef.current = false;
+    dragRef.current = {
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      origin: active,
+      moved: false,
+    };
+    setDragging(true);
+    setDragOffset(0);
+    trackRef.current?.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== e.pointerId) return;
+    const dx = e.clientX - drag.startX;
+    if (Math.abs(dx) > 6) drag.moved = true;
+    setDragOffset(-dx / DRAG_STEP);
+  };
+
+  const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!dragRef.current || dragRef.current.pointerId !== e.pointerId) return;
+    endDrag(e.clientX);
+  };
+
+  const onPointerCancel = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!dragRef.current || dragRef.current.pointerId !== e.pointerId) return;
     dragRef.current = null;
+    setDragging(false);
+    setDragOffset(0);
   };
 
   return (
@@ -120,21 +181,20 @@ export function StoriesSection() {
 
                 <div
                   ref={trackRef}
-                  className="stories-carousel"
+                  className={`stories-carousel ${dragging ? "is-dragging" : ""}`}
                   onPointerDown={onPointerDown}
+                  onPointerMove={onPointerMove}
                   onPointerUp={onPointerUp}
-                  onPointerCancel={() => {
-                    dragRef.current = null;
-                  }}
+                  onPointerCancel={onPointerCancel}
                   role="listbox"
-                  aria-label="Story carousel"
+                  aria-label="Story carousel — drag or use arrow keys"
                   tabIndex={0}
                 >
                   <div className="stories-stage">
                     {STORIES.map((item, i) => {
-                      const offset = i - active;
+                      const offset = i - active - dragOffset;
                       const style = cardTransform(offset, compact);
-                      const isCenter = offset === 0;
+                      const isCenter = Math.abs(offset) < 0.5;
 
                       return (
                         <button
@@ -142,9 +202,16 @@ export function StoriesSection() {
                           type="button"
                           role="option"
                           aria-selected={isCenter}
-                          className={`story-card ${item.type === "feature" ? "story-card-feature" : "story-card-portrait"} ${isCenter ? "is-active" : ""}`}
+                          className={`story-card ${item.type === "feature" ? "story-card-feature" : "story-card-portrait"} ${isCenter ? "is-active" : ""} ${dragging ? "is-dragging" : ""}`}
                           style={style}
-                          onClick={() => go(i)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (suppressClickRef.current) {
+                              suppressClickRef.current = false;
+                              return;
+                            }
+                            go(i);
+                          }}
                         >
                           {item.type === "feature" ? (
                             <div className="feature-panel">
@@ -160,6 +227,7 @@ export function StoriesSection() {
                                       width={72}
                                       height={72}
                                       className="h-full w-full object-cover"
+                                      draggable={false}
                                     />
                                   </span>
                                 ))}
@@ -218,12 +286,19 @@ export function StoriesSection() {
                   <p className="stories-brands-label">
                     BRANDS WHO ARE PART OF OUR SUCCESS STORY.
                   </p>
-                  <div className="stories-logos" aria-hidden="true">
-                    <BrandDreamWorks />
-                    <BrandSony />
-                    <BrandTissot />
-                    <BrandConverse />
-                    <BrandMark />
+                  <div className="stories-logos-marquee" aria-hidden="true">
+                    <div className="stories-logos-track">
+                      <BrandDreamWorks />
+                      <BrandSony />
+                      <BrandTissot />
+                      <BrandConverse />
+                      <BrandMark />
+                      <BrandDreamWorks />
+                      <BrandSony />
+                      <BrandTissot />
+                      <BrandConverse />
+                      <BrandMark />
+                    </div>
                   </div>
                 </div>
               </div>

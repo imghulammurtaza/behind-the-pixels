@@ -12,7 +12,7 @@ export function GlitchHeadline() {
 
   return (
     <h1
-      className={`anim-title liquid-headline relative text-center text-[clamp(1.65rem,6.2vw,3.85rem)] font-medium leading-[1.08] tracking-[-0.04em] text-black ${hovered ? "is-liquid" : ""}`}
+      className={`anim-title liquid-headline relative text-center text-[clamp(2rem,7.2vw,4.65rem)] font-normal leading-[1.06] tracking-[-0.04em] text-black ${hovered ? "is-liquid" : ""}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={hovered ? { filter: `url(#${filterId})` } : undefined}

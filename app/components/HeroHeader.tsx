@@ -4,9 +4,9 @@ import { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 
 const LINKS = [
+  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Projects", href: "/#projects" },
-  { label: "Stories", href: "/#stories" },
   { label: "Services", href: "/#services" },
   { label: "Process", href: "/process" },
   { label: "Testimonials", href: "/testimonials" },
@@ -90,7 +90,13 @@ function LiquidLink({
   );
 }
 
-export function HeroHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
+export function HeroHeader({
+  tone = "light",
+  showLogo = true,
+}: {
+  tone?: "light" | "dark";
+  showLogo?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const chrome =
@@ -163,26 +169,43 @@ export function HeroHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
         >
           Start Project
         </a>
-        <p className="site-menu-note">Behind the Pixels</p>
+        <a
+          href="/"
+          className="site-menu-brand"
+          aria-label="Piermont Studios - Home"
+          onClick={() => setOpen(false)}
+        >
+          <img
+            src="/FooterLogo.png"
+            alt=""
+            className="site-menu-footer-logo"
+          />
+        </a>
       </div>
     </div>
   );
 
   return (
     <>
-      <header className="anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 pt-7 sm:px-10 sm:pt-9 md:px-14 lg:px-16">
+      <header className="anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 pt-7 sm:px-10 sm:pt-8 md:px-14 lg:px-16">
         <a href="/contact" className={`${chrome} justify-self-start`}>
           Let&apos;s Talk
         </a>
-        <a
-          href="/"
-          className={`site-logo ${tone === "dark" ? "site-logo-dark" : "site-logo-light"}`}
-          aria-label="Behind the Pixels — Home"
-        >
-          <span className="site-logo-word" aria-hidden="true">
-            Behind the Pixels
-          </span>
-        </a>
+        {showLogo ? (
+          <a
+            href="/"
+            className="site-logo justify-self-center"
+            aria-label="Piermont Studios - Home"
+          >
+            <img
+              src="/MainLogo.png"
+              alt=""
+              className={`main-logo-nav ${tone === "dark" ? "is-on-dark" : ""}`}
+            />
+          </a>
+        ) : (
+          <span className="justify-self-center" aria-hidden="true" />
+        )}
         <button
           type="button"
           className={`cursor-pointer justify-self-end border-0 bg-transparent p-0 ${chrome}`}

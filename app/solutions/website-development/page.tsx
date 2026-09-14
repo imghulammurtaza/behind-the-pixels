@@ -4,9 +4,9 @@ import { HeroHeader } from "../../components/HeroHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Website Development — Custom Sites That Perform",
+  title: "Website Development - Custom Sites That Perform",
   description:
-    "Custom websites built for speed, clarity, and conversion — from marketing sites to e-commerce and CMS platforms.",
+    "Custom websites built for speed, clarity, and conversion - from marketing sites to e-commerce and CMS platforms.",
 };
 
 const CAPABILITIES = [
@@ -28,7 +28,7 @@ const CAPABILITIES = [
   {
     tag: "PRODUCT",
     title: "Custom web apps",
-    body: "Feature-rich interfaces — dashboards, portals, and tools — shaped around how your users actually work.",
+    body: "Feature-rich interfaces - dashboards, portals, and tools - shaped around how your users actually work.",
   },
 ] as const;
 
@@ -51,7 +51,7 @@ const PROCESS = [
   {
     step: "04",
     title: "Launch & grow",
-    text: "Ship, measure, iterate — with support that keeps the site sharp.",
+    text: "Ship, measure, iterate - with support that keeps the site sharp.",
   },
 ] as const;
 
@@ -117,7 +117,7 @@ export default function WebsiteDevelopmentPage() {
             data-reveal
             style={{ ["--reveal-delay" as string]: "280ms" }}
           >
-            Custom sites built for speed, clarity, and conversion — crafted to
+            Custom sites built for speed, clarity, and conversion - crafted to
             feel unmistakably yours.
           </p>
           <div
@@ -160,7 +160,7 @@ export default function WebsiteDevelopmentPage() {
               Sites that look sharp and work harder.
             </h2>
             <p className="sol-intro-text">
-              We design and engineer websites as products — clear information
+              We design and engineer websites as products - clear information
               architecture, intentional motion, and clean code that stays fast
               as you grow.
             </p>

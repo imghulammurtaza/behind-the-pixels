@@ -8,14 +8,31 @@ type Phase = "idle" | "zoom" | "video";
 
 export function HeroComputer() {
   const btnRef = useRef<HTMLButtonElement>(null);
+  const screenVideoRef = useRef<HTMLVideoElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [portalReady, setPortalReady] = useState(false);
-  const [origin, setOrigin] = useState({ top: 0, left: 0, width: 0, height: 0 });
+  const [origin, setOrigin] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     setPortalReady(true);
   }, []);
+
+  useEffect(() => {
+    const screen = screenVideoRef.current;
+    if (!screen) return;
+    if (phase !== "idle") {
+      screen.pause();
+      return;
+    }
+    screen.muted = true;
+    void screen.play().catch(() => {});
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== "video") return;
@@ -81,18 +98,44 @@ export function HeroComputer() {
       <button
         ref={btnRef}
         type="button"
-        aria-label="Click me — play showreel"
+        aria-label="Click me - play showreel"
         onClick={open}
-        className="anim-computer group relative mt-auto mb-[min(3vh,1.25rem)] w-full max-w-[min(62vw,310px)] shrink-0 cursor-pointer border-0 bg-transparent p-0 sm:mb-[min(4vh,1.75rem)] sm:max-w-[min(48vw,350px)] md:max-w-[min(38vw,370px)]"
+        className="anim-computer group relative shrink-0 cursor-pointer border-0 bg-transparent p-0"
       >
-        <Image
-          src="/retro-computer.png"
-          alt="Vintage computer showing Behind the Pixels"
-          width={729}
-          height={676}
-          priority
-          className="hero-computer-img h-auto max-h-[min(42dvh,380px)] w-full object-contain drop-shadow-[0_24px_48px_rgba(70,50,30,0.16)] transition-transform duration-500 group-hover:scale-[1.015] group-active:scale-[0.99]"
-        />
+        <span className="hero-pc-stage">
+          <div className="hero-pc-screen" aria-hidden="true">
+            <video
+              ref={screenVideoRef}
+              className="hero-pc-screen-video"
+              src="/OtherAssets/pcVideo.mp4"
+              muted
+              loop
+              playsInline
+              autoPlay
+              preload="metadata"
+            />
+            <span className="hero-pc-screen-green" aria-hidden="true" />
+            <span className="hero-pc-click">
+              <span className="hero-pc-click-mask">
+                <span className="hero-pc-click-track">
+                  <span className="hero-pc-click-line">Click me</span>
+                  <span className="hero-pc-click-line" aria-hidden="true">
+                    Click me
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+
+          <Image
+            src="/OtherAssets/oldPC.png"
+            alt="Vintage computer"
+            width={617}
+            height={411}
+            priority
+            className="hero-computer-img h-auto w-full object-contain drop-shadow-[0_24px_48px_rgba(70,50,30,0.16)]"
+          />
+        </span>
       </button>
 
       {portalReady &&
@@ -115,10 +158,10 @@ export function HeroComputer() {
                 }}
               >
                 <Image
-                  src="/retro-computer.png"
+                  src="/OtherAssets/oldPC.png"
                   alt=""
-                  width={729}
-                  height={676}
+                  width={617}
+                  height={411}
                   className="h-full w-full object-contain"
                   priority
                 />
@@ -129,7 +172,7 @@ export function HeroComputer() {
               <video
                 ref={videoRef}
                 className="hero-zoom-video"
-                src="/video.mp4"
+                src="/OtherAssets/pcVideo.mp4"
                 playsInline
                 autoPlay
                 preload="auto"

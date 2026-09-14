@@ -4,7 +4,7 @@ import { HeroHeader } from "../components/HeroHeader";
 import { SiteFooter } from "../components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Contact — Behind the Pixels",
+  title: "Contact - Behind the Pixels",
   description:
     "Fill the form to request a quote. Let’s strategize, build, and promote your next project.",
 };
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 const DETAILS = [
   {
     label: "Email",
-    value: "info@strugbits.com",
-    href: "mailto:info@strugbits.com",
+    value: "info@piermont.com",
+    href: "mailto:info@piermont.com",
   },
   {
     label: "Phone",
@@ -22,7 +22,7 @@ const DETAILS = [
   },
   {
     label: "Hours",
-    value: "Mon–Fri, 9am–6pm",
+    value: "Mon-Fri, 9am-6pm",
     href: null,
   },
 ] as const;

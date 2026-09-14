@@ -1,7 +1,11 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 
 const SERVICE_OPTIONS = [
   "Brand Strategy",
@@ -16,14 +20,139 @@ const SERVICE_OPTIONS = [
 
 const BUDGETS = ["$2,000", "$4,000", "$8,000", "$16,000+"] as const;
 
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
+type TurnstileApi = {
+  render: (
+    container: HTMLElement,
+    options: Record<string, unknown>,
+  ) => string;
+  reset: (widgetId?: string) => void;
+  remove: (widgetId?: string) => void;
+};
+
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi;
+  }
+}
+
 export function ContactSection() {
   const [services, setServices] = useState<string[]>([]);
   const [budget, setBudget] = useState<(typeof BUDGETS)[number] | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">(
+    "idle",
+  );
+  const [errorMessage, setErrorMessage] = useState("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return;
+
+    const renderWidget = () => {
+      if (!window.turnstile || !turnstileRef.current || widgetIdRef.current)
+        return;
+      widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        theme: "dark",
+        action: "contact",
+        callback: (token: string) => setTurnstileToken(token),
+        "expired-callback": () => setTurnstileToken(""),
+        "error-callback": () => setTurnstileToken(""),
+      });
+    };
+
+    if (window.turnstile) {
+      renderWidget();
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[data-turnstile="true"]',
+    );
+    if (existing) {
+      existing.addEventListener("load", renderWidget);
+      return () => existing.removeEventListener("load", renderWidget);
+    }
+
+    const script = document.createElement("script");
+    script.src =
+      "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.dataset.turnstile = "true";
+    script.addEventListener("load", renderWidget);
+    document.head.appendChild(script);
+
+    return () => {
+      script.removeEventListener("load", renderWidget);
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current);
+        widgetIdRef.current = null;
+      }
+    };
+  }, []);
 
   const toggleService = (label: string) => {
     setServices((prev) =>
       prev.includes(label) ? prev.filter((s) => s !== label) : [...prev, label],
     );
+  };
+
+  const resetCaptcha = () => {
+    setTurnstileToken("");
+    if (widgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(widgetIdRef.current);
+    }
+  };
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    if (!turnstileToken) {
+      setStatus("error");
+      setErrorMessage("Please complete the captcha.");
+      return;
+    }
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: String(data.get("name") ?? ""),
+          email: String(data.get("email") ?? ""),
+          phone: String(data.get("phone") ?? ""),
+          project: String(data.get("project") ?? ""),
+          services,
+          budget,
+          turnstileToken,
+        }),
+      });
+      const json = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok || !json.ok) {
+        setStatus("error");
+        setErrorMessage(json.error || "Something went wrong. Please try again.");
+        resetCaptcha();
+        return;
+      }
+      setStatus("ok");
+      form.reset();
+      setServices([]);
+      setBudget(null);
+      resetCaptcha();
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please try again.");
+      resetCaptcha();
+    }
   };
 
   return (
@@ -41,31 +170,30 @@ export function ContactSection() {
           </div>
         </div>
 
-        <div className="contact-grid">
-          <div className="contact-left" data-reveal="left">
-            <h2 className="contact-heading">
-              Ready to get
-              <br />
-              started?
-            </h2>
-            <div className="contact-mockup">
-              <Image
-                src="/contact-mockup.png"
-                alt=""
-                fill
-                sizes="(max-width: 1024px) 90vw, 48vw"
-                className="object-cover object-top"
-              />
-            </div>
+        <h2 className="contact-heading" data-reveal="left">
+          Ready to get
+          <br />
+          started?
+        </h2>
+
+        <div className="contact-body">
+          <div className="contact-mockup" data-reveal="left">
+            <video
+              className="contact-mockup-video"
+              src="/OtherAssets/contact.mov"
+              muted
+              loop
+              playsInline
+              autoPlay
+              preload="metadata"
+            />
           </div>
 
           <form
             className="contact-form"
             data-reveal="right"
             style={{ ["--reveal-delay" as string]: "100ms" }}
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
+            onSubmit={onSubmit}
           >
             <p className="contact-form-intro">
               FILL THE FORM TO REQUEST A QUOTE:
@@ -109,7 +237,7 @@ export function ContactSection() {
               <textarea
                 name="project"
                 required
-                rows={5}
+                rows={6}
                 placeholder="Tell us about your project *"
               />
             </label>
@@ -155,8 +283,32 @@ export function ContactSection() {
               </div>
             </fieldset>
 
-            <button type="submit" className="contact-submit">
-              Submit
+            <div className="contact-captcha">
+              <div ref={turnstileRef} />
+              {!TURNSTILE_SITE_KEY ? (
+                <p className="contact-form-hint">
+                  Captcha site key is missing.
+                </p>
+              ) : null}
+            </div>
+
+            {status === "ok" ? (
+              <p className="contact-form-success" role="status">
+                Thanks - we received your request.
+              </p>
+            ) : null}
+            {status === "error" && errorMessage ? (
+              <p className="contact-form-error" role="alert">
+                {errorMessage}
+              </p>
+            ) : null}
+
+            <button
+              type="submit"
+              className="contact-submit"
+              disabled={status === "sending"}
+            >
+              {status === "sending" ? "Sending..." : "Submit"}
             </button>
           </form>
         </div>

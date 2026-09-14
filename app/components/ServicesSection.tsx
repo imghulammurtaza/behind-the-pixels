@@ -9,13 +9,12 @@ const SERVICES = [
     index: "/01",
     title: "Brand Identity",
     image: null,
-    face: {
-      background: "#b7775f",
-      eyebrow: "DOMAINE DE",
-      title: "TAMARY",
-    },
-    description:
-      "The foundation of every project — how your brand looks, feels, and communicates.",
+    video: "/OtherAssets/BrandIdentityVideo.mp4",
+    face: null,
+    descriptionLines: [
+      "The foundation of every project -",
+      "how your brand looks, feels, and communicates.",
+    ],
     items: [
       "Positioning and messaging frameworks",
       "Visual identity systems",
@@ -28,10 +27,13 @@ const SERVICES = [
     tag: "GROWTH",
     index: "/02",
     title: "Strategy",
-    image: "/service-strategy.png",
+    image: null,
+    video: "/OtherAssets/StretgyVideo.mp4",
     face: null,
-    description:
-      "Clear direction backed by insight and planning to move from idea to execution.",
+    descriptionLines: [
+      "Clear direction backed by insight and planning",
+      "to move from idea to execution.",
+    ],
     items: [
       "Market and audience research",
       "Product and campaign strategy",
@@ -44,10 +46,13 @@ const SERVICES = [
     tag: "CREATIVE",
     index: "/03",
     title: "Design & Innovation",
-    image: "/service-design.png",
+    image: null,
+    video: "/OtherAssets/DesignVideo.mp4",
     face: null,
-    description:
-      "From first concepts to polished products that people want to use and share.",
+    descriptionLines: [
+      "From first concepts to polished products that",
+      "people want to use and share.",
+    ],
     items: [
       "UX and UI design",
       "Prototyping and user testing",
@@ -60,10 +65,13 @@ const SERVICES = [
     tag: "SMART AI",
     index: "/04",
     title: "AI Systems",
-    image: "/service-ai.png",
+    image: "/OtherAssets/Aisystemimage.jpg",
+    video: null,
     face: null,
-    description:
-      "Practical applications of AI to unlock smarter products and workflows.",
+    descriptionLines: [
+      "Practical applications of AI to unlock",
+      "smarter products and workflows.",
+    ],
     items: [
       "Define AI vision and roadmap",
       "Intelligent experience design",
@@ -76,10 +84,13 @@ const SERVICES = [
     tag: "DISCOVERABLE",
     index: "/05",
     title: "SEO",
-    image: "/service-seo.png",
+    image: null,
+    video: "/OtherAssets/SEOVideo.mp4",
     face: null,
-    description:
-      "Make your brand findable — structure, content, and signals that earn attention.",
+    descriptionLines: [
+      "Make your brand findable - structure, content,",
+      "and signals that earn attention.",
+    ],
     items: [
       "Technical SEO audits",
       "Keyword and content strategy",
@@ -92,10 +103,13 @@ const SERVICES = [
     tag: "BUILD",
     index: "/06",
     title: "Development",
-    image: "/service-dev.png",
+    image: null,
+    video: "/OtherAssets/DevelopmentVideo.mp4",
     face: null,
-    description:
-      "Turning ideas and designs into scalable, functional, and reliable digital products.",
+    descriptionLines: [
+      "Turning ideas and designs into scalable,",
+      "functional, and reliable digital products.",
+    ],
     items: [
       "Web and app development",
       "CMS integration and setup",
@@ -156,7 +170,7 @@ export function ServicesSection() {
       className="services-section relative bg-[#f2f1ed] text-black"
     >
       <div className="relative w-full">
-        <div className="services-sticky-head sticky top-0 z-0 pt-6 pb-6 sm:pt-8 sm:pb-8">
+        <div className="services-sticky-head sticky top-0 z-0 pt-1 pb-3 sm:pt-2 sm:pb-4">
           <div className="services-title-block">
             <h2 ref={titleRef} className="services-title">
               SERVICES
@@ -175,7 +189,7 @@ export function ServicesSection() {
               marginBottom: index === last ? "0" : "40vh",
             }}
           >
-            {/* Top frost: soft SERVICES blur fades into solid white body */}
+            {/* Top frost overlay: soft wash + local blur over card content */}
             <div className="service-card-frost" aria-hidden="true">
               <p className="service-card-blur-copy">SERVICES</p>
             </div>
@@ -205,18 +219,16 @@ export function ServicesSection() {
               <div className="service-card-grid">
                 <div className="service-card-left">
                   <div className="service-card-image">
-                    {service.face ? (
-                      <div
-                        className="service-card-face"
-                        style={{ background: service.face.background }}
-                      >
-                        <p className="service-card-face-eyebrow">
-                          {service.face.eyebrow}
-                        </p>
-                        <p className="service-card-face-title">
-                          {service.face.title}
-                        </p>
-                      </div>
+                    {service.video ? (
+                      <video
+                        className="service-card-video"
+                        src={service.video}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        preload="metadata"
+                      />
                     ) : (
                       <Image
                         src={service.image!}
@@ -227,7 +239,13 @@ export function ServicesSection() {
                       />
                     )}
                   </div>
-                  <p className="service-card-desc">{service.description}</p>
+                  <p className="service-card-desc">
+                    {service.descriptionLines.map((line) => (
+                      <span key={line} className="service-card-desc-line">
+                        {line}
+                      </span>
+                    ))}
+                  </p>
                 </div>
 
                 <ul className="service-card-list">

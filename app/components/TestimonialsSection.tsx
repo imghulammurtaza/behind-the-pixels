@@ -10,14 +10,14 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "We've been partnering since 2013 on graphic materials for Tribal Show and Opus – Ancient Arts. The collaboration has always been seamless and inspiring.",
+      "We've been partnering since 2013 on graphic materials for Tribal Show and Opus - Ancient Arts. The collaboration has always been seamless and inspiring.",
     name: "Julie A.",
     company: "Gus Adler & Filles",
     avatar: "/testimonial-2.png",
   },
   {
     quote:
-      "I warmly recommend MP for overseeing the development of our foundation materials — thoughtful, precise, and always aligned with our values.",
+      "I warmly recommend MP for overseeing the development of our foundation materials - thoughtful, precise, and always aligned with our values.",
     name: "Mathilde T.",
     company: "Fondation Marc Ladreit de Lacharrière",
     avatar: "/testimonial-3.png",
@@ -91,7 +91,7 @@ export function TestimonialsSection() {
       <ul className="sr-only">
         {TESTIMONIALS.map((item) => (
           <li key={item.name}>
-            {item.quote} — {item.name}, {item.company}
+            {item.quote} - {item.name}, {item.company}
           </li>
         ))}
       </ul>

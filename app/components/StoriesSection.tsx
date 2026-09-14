@@ -37,10 +37,10 @@ const STORIES: StoryItem[] = [
 ];
 
 const STATS = [
-  { value: "86+", label: "PROJECTS COMPLETED" },
-  { value: "80%", label: "CLIENT SATISFACTION" },
-  { value: "32", label: "AWARDS WON" },
-  { value: "89%", label: "SUCCESS RATE" },
+  { value: "86+", label: "PROJECTS SHIPPED", index: "// 001" },
+  { value: "80%", label: "REPEAT COLLABORATIONS", index: "// 002" },
+  { value: "32", label: "INDUSTRY AWARDS", index: "// 003" },
+  { value: "89%", label: "CLIENT RETENTION RATE", index: "// 004" },
 ] as const;
 
 const FEATURE_THUMBS = [
@@ -79,6 +79,7 @@ export function StoriesSection() {
     startX: number;
     origin: number;
     moved: boolean;
+    cardIndex: number | null;
   } | null>(null);
   const suppressClickRef = useRef(false);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -117,26 +118,24 @@ export function StoriesSection() {
     return () => window.removeEventListener("keydown", onKey);
   }, [active, go]);
 
-  const endDrag = (clientX: number) => {
-    const drag = dragRef.current;
-    if (!drag) return;
-    const dx = clientX - drag.startX;
-    const steps = Math.round(-dx / DRAG_STEP);
-    if (drag.moved || steps !== 0) suppressClickRef.current = true;
-    dragRef.current = null;
-    setDragging(false);
-    if (steps !== 0) go(drag.origin + steps);
-    else setDragOffset(0);
-  };
-
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (e.button !== 0 && e.pointerType === "mouse") return;
     suppressClickRef.current = false;
+    const card = (e.target as HTMLElement | null)?.closest?.(
+      "button.story-card",
+    ) as HTMLElement | null;
+    const rawIndex = card?.dataset?.index;
+    const cardIndex =
+      rawIndex !== undefined && rawIndex !== ""
+        ? Number(rawIndex)
+        : null;
     dragRef.current = {
       pointerId: e.pointerId,
       startX: e.clientX,
       origin: active,
       moved: false,
+      cardIndex:
+        cardIndex !== null && !Number.isNaN(cardIndex) ? cardIndex : null,
     };
     setDragging(true);
     setDragOffset(0);
@@ -151,16 +150,49 @@ export function StoriesSection() {
     setDragOffset(-dx / DRAG_STEP);
   };
 
+  const finishPointer = (
+    e: ReactPointerEvent<HTMLDivElement>,
+    cancelled = false,
+  ) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== e.pointerId) return;
+    const dx = e.clientX - drag.startX;
+    const steps = Math.round(-dx / DRAG_STEP);
+    const wasTap = !cancelled && !drag.moved && steps === 0;
+    const cardIndex = drag.cardIndex;
+    dragRef.current = null;
+    setDragging(false);
+
+    if (trackRef.current?.hasPointerCapture(e.pointerId)) {
+      trackRef.current.releasePointerCapture(e.pointerId);
+    }
+
+    if (steps !== 0) {
+      suppressClickRef.current = true;
+      go(drag.origin + steps);
+      return;
+    }
+
+    setDragOffset(0);
+
+    if (!wasTap) {
+      if (drag.moved) suppressClickRef.current = true;
+      return;
+    }
+
+    suppressClickRef.current = true;
+
+    if (cardIndex !== null && cardIndex !== active) {
+      go(cardIndex);
+    }
+  };
+
   const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current || dragRef.current.pointerId !== e.pointerId) return;
-    endDrag(e.clientX);
+    finishPointer(e, false);
   };
 
   const onPointerCancel = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current || dragRef.current.pointerId !== e.pointerId) return;
-    dragRef.current = null;
-    setDragging(false);
-    setDragOffset(0);
+    finishPointer(e, true);
   };
 
   return (
@@ -170,146 +202,156 @@ export function StoriesSection() {
       aria-label="Stories"
     >
       <div className="mx-auto w-full max-w-[1180px]">
-        <div className="imac-shell">
-          <div className="imac-bezel">
-            <div className="imac-screen">
-              <div className="stories-screen-inner">
-                <h2 className="stories-title" aria-hidden="true">
-                  STORIES
-                </h2>
-                <h2 className="sr-only">Stories</h2>
+        <div className="stories-lcd">
+          <img
+            src="/OtherAssets/LCD.png"
+            alt=""
+            className="stories-lcd-frame"
+            draggable={false}
+          />
+          <div className="stories-lcd-screen">
+            <div className="stories-screen-inner">
+              <h2 className="stories-title" aria-hidden="true">
+                STORIES
+              </h2>
+              <h2 className="sr-only">Stories</h2>
 
-                <div
-                  ref={trackRef}
-                  className={`stories-carousel ${dragging ? "is-dragging" : ""}`}
-                  onPointerDown={onPointerDown}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={onPointerUp}
-                  onPointerCancel={onPointerCancel}
-                  role="listbox"
-                  aria-label="Story carousel — drag or use arrow keys"
-                  tabIndex={0}
-                >
-                  <div className="stories-stage">
-                    {STORIES.map((item, i) => {
-                      const offset = i - active - dragOffset;
-                      const style = cardTransform(offset, compact);
-                      const isCenter = Math.abs(offset) < 0.5;
+              <div
+                ref={trackRef}
+                className={`stories-carousel ${dragging ? "is-dragging" : ""}`}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerCancel={onPointerCancel}
+                role="listbox"
+                aria-label="Story carousel - drag or use arrow keys"
+                tabIndex={0}
+              >
+                <div className="stories-stage">
+                  {STORIES.map((item, i) => {
+                    const offset = i - active - dragOffset;
+                    const style = cardTransform(offset, compact);
+                    const isCenter = Math.abs(offset) < 0.5;
 
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          role="option"
-                          aria-selected={isCenter}
-                          className={`story-card ${item.type === "feature" ? "story-card-feature" : "story-card-portrait"} ${isCenter ? "is-active" : ""} ${dragging ? "is-dragging" : ""}`}
-                          style={style}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (suppressClickRef.current) {
-                              suppressClickRef.current = false;
-                              return;
-                            }
-                            go(i);
-                          }}
-                        >
-                          {item.type === "feature" ? (
-                            <div className="feature-panel">
-                              <p className="feature-heading">
-                                Inspiring Journeys Of Strength And Hope.
-                              </p>
-                              <div className="feature-thumbs">
-                                {FEATURE_THUMBS.map((src) => (
-                                  <span key={src} className="feature-thumb">
-                                    <Image
-                                      src={src}
-                                      alt=""
-                                      width={72}
-                                      height={72}
-                                      className="h-full w-full object-cover"
-                                      draggable={false}
-                                    />
-                                  </span>
-                                ))}
-                              </div>
-                              <span className="feature-cta">Watch Story</span>
-                            </div>
-                          ) : (
-                            <>
-                              <Image
-                                src={item.src}
-                                alt=""
-                                fill
-                                sizes="220px"
-                                className="object-cover"
-                                draggable={false}
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        role="option"
+                        data-index={i}
+                        aria-selected={isCenter}
+                        className={`story-card ${item.type === "feature" ? "story-card-feature" : "story-card-portrait"} ${isCenter ? "is-active" : ""} ${dragging ? "is-dragging" : ""}`}
+                        style={style}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (suppressClickRef.current) {
+                            suppressClickRef.current = false;
+                            return;
+                          }
+                          if (i !== active) go(i);
+                        }}
+                      >
+                        {item.type === "feature" ? (
+                          <div className="feature-panel">
+                            <p className="feature-heading">
+                              Inspiring Journeys Of Strength And Hope.
+                            </p>
+                            <div className="feature-video-wrap">
+                              <video
+                                className="feature-video"
+                                src="/OtherAssets/contact.mov"
+                                muted
+                                loop
+                                playsInline
+                                autoPlay
+                                preload="metadata"
                               />
-                              <span className="story-play" aria-hidden="true">
-                                <svg
-                                  width="22"
-                                  height="22"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                >
-                                  <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="11"
-                                    stroke="white"
-                                    strokeWidth="1.5"
-                                    fill="rgba(255,255,255,0.12)"
+                            </div>
+                            <div className="feature-thumbs">
+                              {FEATURE_THUMBS.map((src) => (
+                                <span key={src} className="feature-thumb">
+                                  <Image
+                                    src={src}
+                                    alt=""
+                                    width={72}
+                                    height={72}
+                                    className="h-full w-full object-cover"
+                                    draggable={false}
                                   />
-                                  <path
-                                    d="M10 8.5v7l6-3.5-6-3.5z"
-                                    fill="white"
-                                  />
-                                </svg>
-                              </span>
-                            </>
-                          )}
-                        </button>
-                      );
-                    })}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <Image
+                              src={item.src}
+                              alt=""
+                              fill
+                              sizes="220px"
+                              className="object-cover"
+                              draggable={false}
+                            />
+                            <span className="story-play" aria-hidden="true">
+                              <svg
+                                width="22"
+                                height="22"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                              >
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="11"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  fill="rgba(255,255,255,0.12)"
+                                />
+                                <path
+                                  d="M10 8.5v7l6-3.5-6-3.5z"
+                                  fill="white"
+                                />
+                              </svg>
+                            </span>
+                          </>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="stories-stats">
+                {STATS.map((stat) => (
+                  <div key={stat.label} className="stories-stat">
+                    <span className="stories-stat-value">{stat.value}</span>
+                    <span className="stories-stat-label">{stat.label}</span>
+                    <span className="stories-stat-index">{stat.index}</span>
                   </div>
-                </div>
+                ))}
+              </div>
 
-                <div className="stories-stats">
-                  {STATS.map((stat) => (
-                    <div key={stat.label} className="stories-stat">
-                      <span className="stories-stat-value">{stat.value}</span>
-                      <span className="stories-stat-label">{stat.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="stories-brands">
-                  <p className="stories-brands-label">
-                    BRANDS WHO ARE PART OF OUR SUCCESS STORY.
-                  </p>
-                  <div className="stories-logos-marquee" aria-hidden="true">
-                    <div className="stories-logos-track">
-                      <BrandDreamWorks />
-                      <BrandSony />
-                      <BrandTissot />
-                      <BrandConverse />
-                      <BrandMark />
-                      <BrandDreamWorks />
-                      <BrandSony />
-                      <BrandTissot />
-                      <BrandConverse />
-                      <BrandMark />
-                    </div>
+              <div className="stories-brands">
+                <p className="stories-brands-label">
+                  BRANDS WHO ARE PART OF OUR SUCCESS STORY
+                </p>
+                <div className="stories-logos-marquee" aria-hidden="true">
+                  <div className="stories-logos-track">
+                    <BrandDreamWorks />
+                    <BrandSony />
+                    <BrandTissot />
+                    <BrandConverse />
+                    <BrandMark />
+                    <BrandDreamWorks />
+                    <BrandSony />
+                    <BrandTissot />
+                    <BrandConverse />
+                    <BrandMark />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="imac-chin" aria-hidden="true">
-            <span className="imac-chin-bar" />
-          </div>
-          <div className="imac-stand" aria-hidden="true">
-            <div className="imac-neck" />
-            <div className="imac-foot" />
           </div>
         </div>
       </div>

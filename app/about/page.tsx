@@ -4,7 +4,7 @@ import { HeroHeader } from "../components/HeroHeader";
 import { SiteFooter } from "../components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "About — Behind the Pixels",
+  title: "About - Behind the Pixels",
   description:
     "We strategize, build, and promote brands with clarity, craft, and conviction.",
 };
@@ -13,7 +13,7 @@ const VALUES = [
   {
     tag: "CLARITY",
     title: "Strategy first",
-    body: "Every project starts with positioning, audience, and a sharp point of view — before pixels or campaigns.",
+    body: "Every project starts with positioning, audience, and a sharp point of view - before pixels or campaigns.",
   },
   {
     tag: "CRAFT",
@@ -23,7 +23,7 @@ const VALUES = [
   {
     tag: "MOMENTUM",
     title: "Promote with precision",
-    body: "Launch, iterate, and amplify — so the work doesn’t stop at the handoff, it keeps performing.",
+    body: "Launch, iterate, and amplify - so the work doesn’t stop at the handoff, it keeps performing.",
   },
   {
     tag: "PARTNERSHIP",
@@ -35,7 +35,7 @@ const VALUES = [
 const PROCESS = [
   { step: "01", title: "Discover", text: "Goals, constraints, audience, and the real problem to solve." },
   { step: "02", title: "Define", text: "Positioning, narrative, and the system that will carry the brand." },
-  { step: "03", title: "Design", text: "Identity, product, and experience — crafted for clarity and delight." },
+  { step: "03", title: "Design", text: "Identity, product, and experience - crafted for clarity and delight." },
   { step: "04", title: "Deliver", text: "Build, launch, and grow with measurement baked into the plan." },
 ] as const;
 
@@ -56,7 +56,7 @@ export default function AboutPage() {
             ABOUT
           </h1>
           <p className="about-lead" data-reveal style={{ ["--reveal-delay" as string]: "280ms" }}>
-            Behind the pixels — we strategize, build, and promote brands that
+            Behind the pixels - we strategize, build, and promote brands that
             feel clear, human, and hard to ignore.
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function AboutPage() {
             <p className="about-story-text">
               We sit at the intersection of strategy, design, and growth. That
               means identity systems that scale, digital products people want to
-              use, and campaigns that actually move the needle — not just look
+              use, and campaigns that actually move the needle - not just look
               good in a deck.
             </p>
             <p className="about-story-text">

@@ -130,7 +130,7 @@ export function ProjectsSection() {
           <span className="h-px w-9 bg-[#ff2d1a]" />
           <span className="h-px flex-1 bg-white/20" />
         </div>
-        <h2 className="mt-5 pb-10 text-[clamp(3rem,7.8vw,5rem)] font-normal leading-[0.95] tracking-[-0.04em] sm:pb-12 lg:pb-14">
+        <h2 className="projects-heading mt-5 pb-10 text-[clamp(3rem,7.8vw,5rem)] leading-[0.95] tracking-[-0.04em] sm:pb-12 lg:pb-14">
           Projects
         </h2>
       </div>

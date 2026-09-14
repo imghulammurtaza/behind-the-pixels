@@ -4,9 +4,9 @@ import { HeroHeader } from "../components/HeroHeader";
 import { SiteFooter } from "../components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Process — From Brief to Launch",
+  title: "Process - From Brief to Launch",
   description:
-    "A clear, collaborative process from discovery to launch and growth — strategy, design, build, and iteration.",
+    "A clear, collaborative process from discovery to launch and growth - strategy, design, build, and iteration.",
 };
 
 const FLOW = [
@@ -15,8 +15,8 @@ const FLOW = [
     phase: "Discover",
     title: "Understand the real problem",
     summary:
-      "We start with listening — goals, audience, constraints, and what success has to look like before a single pixel moves.",
-    duration: "1–2 weeks",
+      "We start with listening - goals, audience, constraints, and what success has to look like before a single pixel moves.",
+    duration: "1-2 weeks",
     image: "/service-strategy.png",
     imageAlt: "Strategy and discovery workshop materials",
     activities: [
@@ -36,8 +36,8 @@ const FLOW = [
     phase: "Define",
     title: "Shape the direction",
     summary:
-      "Insights become a sharp point of view — positioning, narrative, information architecture, and the system that will carry the work.",
-    duration: "1–2 weeks",
+      "Insights become a sharp point of view - positioning, narrative, information architecture, and the system that will carry the work.",
+    duration: "1-2 weeks",
     image: "/service-brand.png",
     imageAlt: "Brand definition and positioning boards",
     activities: [
@@ -57,8 +57,8 @@ const FLOW = [
     phase: "Design",
     title: "Craft the experience",
     summary:
-      "Direction turns into interface and identity — layouts, systems, and prototypes you can feel before we write production code.",
-    duration: "2–4 weeks",
+      "Direction turns into interface and identity - layouts, systems, and prototypes you can feel before we write production code.",
+    duration: "2-4 weeks",
     image: "/service-design.png",
     imageAlt: "UI design and product interface exploration",
     activities: [
@@ -78,8 +78,8 @@ const FLOW = [
     phase: "Build",
     title: "Engineer what we designed",
     summary:
-      "Design becomes a fast, accessible product — clean frontend, reliable integrations, and content systems your team can own.",
-    duration: "3–6 weeks",
+      "Design becomes a fast, accessible product - clean frontend, reliable integrations, and content systems your team can own.",
+    duration: "3-6 weeks",
     image: "/service-dev.png",
     imageAlt: "Development workspace and product build",
     activities: [
@@ -99,7 +99,7 @@ const FLOW = [
     phase: "Launch",
     title: "Ship with confidence",
     summary:
-      "Go-live is planned, measured, and calm — SEO basics, analytics, performance checks, and a clear cutover plan.",
+      "Go-live is planned, measured, and calm - SEO basics, analytics, performance checks, and a clear cutover plan.",
     duration: "1 week",
     image: "/contact-mockup.png",
     imageAlt: "Polished website ready for launch",
@@ -142,7 +142,7 @@ const PRINCIPLES = [
   {
     tag: "TRANSPARENT",
     title: "No black boxes",
-    body: "You always know where we are — milestones, blockers, and next decisions stay visible.",
+    body: "You always know where we are - milestones, blockers, and next decisions stay visible.",
   },
   {
     tag: "COLLABORATIVE",
@@ -152,7 +152,7 @@ const PRINCIPLES = [
   {
     tag: "MEASURABLE",
     title: "Outcomes over output",
-    body: "Every phase ties back to goals — so the work is judged by impact, not just deliverables.",
+    body: "Every phase ties back to goals - so the work is judged by impact, not just deliverables.",
   },
 ] as const;
 
@@ -189,7 +189,7 @@ export default function ProcessPage() {
             data-reveal
             style={{ ["--reveal-delay" as string]: "280ms" }}
           >
-            A clear path from first conversation to live product — and the
+            A clear path from first conversation to live product - and the
             growth that comes after.
           </p>
         </div>
@@ -207,7 +207,7 @@ export default function ProcessPage() {
             </h2>
             <p className="proc-intro-text">
               We don’t disappear between kickoff and launch. Each phase has a
-              purpose, a set of outputs, and a decision point — so momentum
+              purpose, a set of outputs, and a decision point - so momentum
               never stalls and nothing ships by accident.
             </p>
           </div>

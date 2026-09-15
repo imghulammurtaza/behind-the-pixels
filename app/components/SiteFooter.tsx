@@ -67,11 +67,6 @@ function Achievements() {
         alt="Trustpilot rating"
         className="footer-trustpilot"
       />
-      <img
-        src="/OtherAssets/Awards.png"
-        alt="Wix partner awards"
-        className="footer-awards"
-      />
     </div>
   );
 }

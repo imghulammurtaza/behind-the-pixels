@@ -169,7 +169,7 @@ body {
 }
 
 .hero-headline-wrap {
-  margin-top: clamp(0.35rem, 1.4vh, 0.85rem);
+  margin-top: clamp(1.5rem, 4.8vh, 2.85rem);
   margin-bottom: 0;
 }
 

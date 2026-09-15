@@ -54,12 +54,12 @@ const DRAG_STEP = 92;
 
 function cardTransform(offset: number, compact = false) {
   const abs = Math.abs(offset);
-  const rotateY = offset * (compact ? -18 : -28);
-  const translateX = offset * (compact ? 78 : 118);
-  const translateZ = -abs * (compact ? 60 : 90);
+  const rotateY = offset * (compact ? -11 : -28);
+  const translateX = offset * (compact ? 52 : 118);
+  const translateZ = -abs * (compact ? 38 : 90);
   const scale = Math.max(
-    compact ? 0.78 : 0.72,
-    1 - abs * (compact ? 0.1 : 0.12),
+    compact ? 0.84 : 0.72,
+    1 - abs * (compact ? 0.07 : 0.12),
   );
   const opacity = Math.max(0.28, 1 - abs * 0.18);
   return {
@@ -90,7 +90,7 @@ export function StoriesSection() {
   }, []);
 
   useEffect(() => {
-    const syncCompact = () => setCompact(window.innerWidth < 640);
+    const syncCompact = () => setCompact(window.innerWidth < 768);
     syncCompact();
     window.addEventListener("resize", syncCompact);
     return () => window.removeEventListener("resize", syncCompact);

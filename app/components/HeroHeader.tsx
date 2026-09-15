@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 const LINKS = [
@@ -13,7 +13,7 @@ const LINKS = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-function LiquidLink({
+function MenuLink({
   href,
   label,
   index,
@@ -26,66 +26,23 @@ function LiquidLink({
   open: boolean;
   onNavigate: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
-  const uid = useId().replace(/:/g, "");
-  const filterId = `menu-liquid-${uid}`;
-
   return (
     <a
       href={href}
-      className={`site-menu-link ${hovered ? "is-liquid" : ""}`}
+      className="site-menu-link"
       style={{
         transitionDelay: open
           ? `${90 + index * 60}ms`
           : `${(LINKS.length - 1 - index) * 45}ms`,
-        filter: hovered ? `url(#${filterId})` : undefined,
       }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       onClick={onNavigate}
     >
-      <svg className="liquid-svg-defs" aria-hidden="true" focusable="false">
-        <defs>
-          <filter
-            id={filterId}
-            x="-25%"
-            y="-40%"
-            width="150%"
-            height="180%"
-            filterUnits="objectBoundingBox"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.014 0.045"
-              numOctaves="2"
-              seed={index + 2}
-              result="noise"
-            >
-              <animate
-                attributeName="baseFrequency"
-                dur="2.2s"
-                values="0.01 0.03;0.028 0.055;0.01 0.03"
-                repeatCount="indefinite"
-              />
-            </feTurbulence>
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale={16}
-              xChannelSelector="R"
-              yChannelSelector="G"
-            >
-              <animate
-                attributeName="scale"
-                dur="2.2s"
-                values="10;20;13;18;10"
-                repeatCount="indefinite"
-              />
-            </feDisplacementMap>
-          </filter>
-        </defs>
-      </svg>
-      {label}
+      <span className="site-menu-link-track">
+        <span className="site-menu-link-text">{label}</span>
+        <span className="site-menu-link-text" aria-hidden="true">
+          {label}
+        </span>
+      </span>
     </a>
   );
 }
@@ -150,7 +107,7 @@ export function HeroHeader({
 
       <nav className="site-menu-nav" aria-label="Full menu">
         {LINKS.map((link, i) => (
-          <LiquidLink
+          <MenuLink
             key={link.href}
             href={link.href}
             label={link.label}
@@ -187,7 +144,7 @@ export function HeroHeader({
 
   return (
     <>
-      <header className="anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 pt-7 sm:px-10 sm:pt-8 md:px-14 lg:px-16">
+      <header className="anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 pt-4 pb-1 sm:px-10 sm:pt-5 sm:pb-1 md:px-14 lg:px-16">
         <a href="/contact" className={`${chrome} justify-self-start`}>
           Let&apos;s Talk
         </a>

@@ -13,7 +13,7 @@ import { TestimonialsSection } from "./components/TestimonialsSection";
 export default function Home() {
   return (
     <>
-      <section className="hero-bg relative flex h-dvh max-h-dvh flex-col overflow-hidden">
+      <section className="hero-bg relative flex h-[90dvh] max-h-[102dvh] flex-col overflow-hidden">
         <HeroHeader />
 
         <main className="hero-main relative z-10 flex min-h-0 flex-1 flex-col items-center px-5 sm:px-8">

@@ -12,7 +12,7 @@ export function GlitchHeadline() {
 
   return (
     <h1
-      className={`anim-title liquid-headline relative text-center text-[clamp(2.15rem,5.8vw,3.85rem)] font-normal leading-[1.08] tracking-[-0.045em] text-black ${hovered ? "is-liquid" : ""}`}
+      className={`anim-title liquid-headline relative pt-20 text-[2rem] xl:pt-12 text-center xl:text-[clamp(2.05rem,5.3vw,3.55rem)] font-normal leading-[1.08] tracking-[-0.04em] text-black ${hovered ? "is-liquid" : ""}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={hovered ? { filter: `url(#${filterId})` } : undefined}
@@ -65,7 +65,7 @@ export function GlitchHeadline() {
       <span aria-hidden="true" className="relative mx-auto block max-w-full text-balance">
         {LINE_ONE}
       </span>
-      <span aria-hidden="true" className="mt-[0.1em] block">
+      <span aria-hidden="true" className="mt-[0.02em] block">
         {LINE_TWO}
       </span>
     </h1>

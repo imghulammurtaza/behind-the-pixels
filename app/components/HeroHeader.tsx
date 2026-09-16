@@ -31,23 +31,19 @@ function MenuLink({
       href={href}
       className="site-menu-link"
       style={{
-        transitionDelay: open
+        ["--menu-delay" as string]: open
           ? `${90 + index * 60}ms`
           : `${(LINKS.length - 1 - index) * 45}ms`,
       }}
       onClick={onNavigate}
     >
-      <span className="site-menu-link-track">
-        <span className="site-menu-link-text">{label}</span>
-        <span className="site-menu-link-text" aria-hidden="true">
-          {label}
-        </span>
-      </span>
+      <span className="site-menu-link-label">{label}</span>
     </a>
   );
 }
 
 export function HeroHeader({
+  tone = "light",
   showLogo = true,
 }: {
   tone?: "light" | "dark";
@@ -55,8 +51,9 @@ export function HeroHeader({
 }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const isDark = tone === "dark";
   const chrome =
-    "site-header-chrome text-[15px] font-normal tracking-[-0.01em] transition-colors";
+    "site-header-chrome text-[15px] font-normal tracking-[-0.01em] transition-opacity";
 
   useEffect(() => {
     setMounted(true);
@@ -141,7 +138,9 @@ export function HeroHeader({
 
   return (
     <>
-      <header className="site-header anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 py-3.5 sm:px-10 sm:py-4 md:px-14 lg:px-16">
+      <header
+        className={`site-header anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 pt-4 pb-1 sm:px-10 sm:pt-5 sm:pb-1 md:px-14 lg:px-16${isDark ? " is-dark" : ""}`}
+      >
         <a href="/contact" className={`${chrome} justify-self-start`}>
           Let&apos;s Talk
         </a>
@@ -154,7 +153,7 @@ export function HeroHeader({
             <img
               src="/MainLogo.png"
               alt=""
-              className="main-logo-nav is-on-dark"
+              className={`main-logo-nav${isDark ? " is-on-dark" : ""}`}
             />
           </a>
         ) : (

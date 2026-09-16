@@ -30,11 +30,8 @@ const LOCATIONS = [
 ] as const;
 
 const SOCIALS = [
-  "Facebook",
-  "Instagram",
-  "LinkedIn",
-  "X",
-  "Youtube",
+  { label: "Instagram", href: "https://www.instagram.com/piermontstudios" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/piermont-studios/" },
 ] as const;
 
 function ShowMore() {
@@ -178,9 +175,14 @@ export function SiteFooter() {
           </p>
           <div className="footer-socials">
             <span className="footer-socials-label">Socials:</span>
-            {SOCIALS.map((name) => (
-              <a key={name} href="#">
-                {name}
+            {SOCIALS.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {item.label}
               </a>
             ))}
           </div>

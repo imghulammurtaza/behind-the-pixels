@@ -3,10 +3,7 @@
 :root {
   --background: #fdfbf7;
   --foreground: #0a0a0a;
-  --cta: #0f3473;
-  --cta-hover: #164a96;
-  --cta-active: #0b2758;
-  --header-bg: #0f3473;
+  --cta: #1a1a1a;
   --bar: rgba(255, 255, 255, 0.72);
   --logo: #1f6b63;
 }
@@ -405,13 +402,13 @@ body {
 }
 
 .hero-cta-btn:hover {
-  background: var(--cta-hover);
+  background: #000;
   border-color: transparent;
   box-shadow: none;
 }
 
 .hero-cta-btn:active {
-  background: var(--cta-active);
+  background: #000;
   transform: scale(0.98);
 }
 
@@ -2007,7 +2004,7 @@ body {
   cursor: pointer;
   border: 0;
   border-radius: 999px;
-  background: var(--cta);
+  background: #ff6b4e;
   color: #fff;
   font: inherit;
   font-size: 1rem;
@@ -2020,7 +2017,7 @@ body {
 }
 
 .contact-submit:hover {
-  background: var(--cta-hover);
+  background: #ff5736;
 }
 
 .contact-submit:active {
@@ -2436,7 +2433,7 @@ body {
     max(1.25rem, env(safe-area-inset-top))
     clamp(1.5rem, 4vw, 4rem)
     max(1.25rem, env(safe-area-inset-bottom));
-  background: var(--cta);
+  background: #0e0e0e;
   color: #fff;
   opacity: 0;
   visibility: hidden;
@@ -2601,7 +2598,7 @@ body {
   justify-content: center;
   border-radius: 999px;
   background: #fff;
-  color: var(--cta);
+  color: #111;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 400;
@@ -2613,7 +2610,7 @@ body {
 }
 
 .site-menu-cta:hover {
-  background: rgba(255, 255, 255, 0.88);
+  background: #e8e8e8;
 }
 
 .site-menu-cta:active {
@@ -3274,7 +3271,7 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--cta);
+  background: #1a1a1a;
   color: #fff;
   text-decoration: none;
   font-size: 0.98rem;
@@ -3284,7 +3281,7 @@ body {
 }
 
 .about-cta-button:hover {
-  background: var(--cta-hover);
+  background: #000;
 }
 
 .about-cta-button:active {
@@ -3529,23 +3526,22 @@ a.contact-page-channel-value:hover {
 }
 
 .sol-btn-primary {
-  background: var(--cta);
+  background: #1a1a1a;
   color: #fff;
 }
 
 .sol-btn-primary:hover {
-  background: var(--cta-hover);
+  background: #000;
 }
 
 .sol-btn-ghost {
   background: transparent;
-  color: var(--cta);
-  border: 1px solid rgba(15, 52, 115, 0.28);
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.18);
 }
 
 .sol-btn-ghost:hover {
-  border-color: var(--cta);
-  background: rgba(15, 52, 115, 0.06);
+  border-color: rgba(0, 0, 0, 0.4);
 }
 
 .sol-btn-lg {
@@ -4176,8 +4172,8 @@ a.contact-page-channel-value:hover {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--cta);
-  color: #fff;
+  background: #fff;
+  color: #111;
   text-decoration: none;
   font-size: 0.98rem;
   font-weight: 400;
@@ -4186,7 +4182,7 @@ a.contact-page-channel-value:hover {
 }
 
 .tm-cta-button:hover {
-  background: var(--cta-hover);
+  background: #e8e8e8;
 }
 
 .tm-cta-button:active {
@@ -4641,8 +4637,8 @@ a.contact-page-channel-value:hover {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--cta);
-  color: #fff;
+  background: #fff;
+  color: #111;
   text-decoration: none;
   font-size: 0.98rem;
   font-weight: 400;
@@ -4651,7 +4647,7 @@ a.contact-page-channel-value:hover {
 }
 
 .proc-cta-button:hover {
-  background: var(--cta-hover);
+  background: #e8e8e8;
 }
 
 .proc-cta-button:active {

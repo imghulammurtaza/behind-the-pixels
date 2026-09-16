@@ -3,7 +3,10 @@
 :root {
   --background: #fdfbf7;
   --foreground: #0a0a0a;
-  --cta: #1a1a1a;
+  --cta: #0f3473;
+  --cta-hover: #164a96;
+  --cta-active: #0b2758;
+  --header-bg: #0f3473;
   --bar: rgba(255, 255, 255, 0.72);
   --logo: #1f6b63;
 }
@@ -164,7 +167,7 @@ body {
 
 /* Hero: smaller PC like Figma, with air around it */
 .hero-main {
-  padding-top: clamp(4.35rem, 7.5vh, 5rem);
+  padding-top: clamp(5.5rem, 9vh, 6.35rem);
   padding-bottom: clamp(2.4rem, 4.2vh, 3rem);
 }
 
@@ -387,7 +390,7 @@ body {
   justify-content: center;
   border-radius: 999px;
   border: 0;
-  background: #1a1a1a;
+  background: var(--cta);
   padding: 0.82rem 1.45rem;
   font-size: 0.9rem;
   font-weight: 400;
@@ -398,13 +401,18 @@ body {
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
 
 .hero-cta-btn:hover {
-  background: #000;
+  background: var(--cta-hover);
   border-color: transparent;
   box-shadow: none;
+}
+
+.hero-cta-btn:active {
+  background: var(--cta-active);
+  transform: scale(0.98);
 }
 
 @media (min-width: 640px) {
@@ -1999,7 +2007,7 @@ body {
   cursor: pointer;
   border: 0;
   border-radius: 999px;
-  background: #ff6b4e;
+  background: var(--cta);
   color: #fff;
   font: inherit;
   font-size: 1rem;
@@ -2012,7 +2020,7 @@ body {
 }
 
 .contact-submit:hover {
-  background: #ff5736;
+  background: var(--cta-hover);
 }
 
 .contact-submit:active {
@@ -2297,6 +2305,20 @@ body {
   color: #fff;
 }
 
+.site-header {
+  background: var(--header-bg);
+  box-shadow: 0 8px 28px rgba(15, 52, 115, 0.18);
+}
+
+.site-header .site-header-chrome {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.site-header .site-header-chrome:hover {
+  color: #fff;
+  opacity: 1;
+}
+
 /* ========== Full screen menu ========== */
 .site-logo {
   display: inline-flex;
@@ -2546,8 +2568,8 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: #fff;
-  color: #111;
+  background: var(--cta);
+  color: #fff;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 400;
@@ -2559,7 +2581,7 @@ body {
 }
 
 .site-menu-cta:hover {
-  background: #e8e8e8;
+  background: var(--cta-hover);
 }
 
 .site-menu-cta:active {
@@ -2836,7 +2858,7 @@ body {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     padding-top: 0.85rem;
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.85rem;
   }
 
   .hero-main {
@@ -3213,7 +3235,7 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: #1a1a1a;
+  background: var(--cta);
   color: #fff;
   text-decoration: none;
   font-size: 0.98rem;
@@ -3223,7 +3245,7 @@ body {
 }
 
 .about-cta-button:hover {
-  background: #000;
+  background: var(--cta-hover);
 }
 
 .about-cta-button:active {
@@ -3468,22 +3490,23 @@ a.contact-page-channel-value:hover {
 }
 
 .sol-btn-primary {
-  background: #1a1a1a;
+  background: var(--cta);
   color: #fff;
 }
 
 .sol-btn-primary:hover {
-  background: #000;
+  background: var(--cta-hover);
 }
 
 .sol-btn-ghost {
   background: transparent;
-  color: #1a1a1a;
-  border: 1px solid rgba(0, 0, 0, 0.18);
+  color: var(--cta);
+  border: 1px solid rgba(15, 52, 115, 0.28);
 }
 
 .sol-btn-ghost:hover {
-  border-color: rgba(0, 0, 0, 0.4);
+  border-color: var(--cta);
+  background: rgba(15, 52, 115, 0.06);
 }
 
 .sol-btn-lg {
@@ -4114,8 +4137,8 @@ a.contact-page-channel-value:hover {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: #fff;
-  color: #111;
+  background: var(--cta);
+  color: #fff;
   text-decoration: none;
   font-size: 0.98rem;
   font-weight: 400;
@@ -4124,7 +4147,7 @@ a.contact-page-channel-value:hover {
 }
 
 .tm-cta-button:hover {
-  background: #e8e8e8;
+  background: var(--cta-hover);
 }
 
 .tm-cta-button:active {
@@ -4579,8 +4602,8 @@ a.contact-page-channel-value:hover {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: #fff;
-  color: #111;
+  background: var(--cta);
+  color: #fff;
   text-decoration: none;
   font-size: 0.98rem;
   font-weight: 400;
@@ -4589,7 +4612,7 @@ a.contact-page-channel-value:hover {
 }
 
 .proc-cta-button:hover {
-  background: #e8e8e8;
+  background: var(--cta-hover);
 }
 
 .proc-cta-button:active {

@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 const DETAILS = [
   {
     label: "Email",
-    value: "info@piermont.com",
-    href: "mailto:info@piermont.com",
+    value: "harris@piermontstudios.com",
+    href: "mailto:harris@piermontstudios.com",
   },
   {
     label: "Phone",

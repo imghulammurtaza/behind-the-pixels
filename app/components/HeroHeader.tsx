@@ -48,7 +48,6 @@ function MenuLink({
 }
 
 export function HeroHeader({
-  tone = "light",
   showLogo = true,
 }: {
   tone?: "light" | "dark";
@@ -57,9 +56,7 @@ export function HeroHeader({
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const chrome =
-    tone === "dark"
-      ? "text-[15px] font-normal tracking-[-0.01em] text-white/75 transition-opacity hover:text-white hover:opacity-100"
-      : "text-[15px] font-normal tracking-[-0.01em] text-black transition-opacity hover:opacity-55";
+    "site-header-chrome text-[15px] font-normal tracking-[-0.01em] transition-colors";
 
   useEffect(() => {
     setMounted(true);
@@ -144,7 +141,7 @@ export function HeroHeader({
 
   return (
     <>
-      <header className="anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 pt-4 pb-1 sm:px-10 sm:pt-5 sm:pb-1 md:px-14 lg:px-16">
+      <header className="site-header anim-nav absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-6 py-3.5 sm:px-10 sm:py-4 md:px-14 lg:px-16">
         <a href="/contact" className={`${chrome} justify-self-start`}>
           Let&apos;s Talk
         </a>
@@ -157,7 +154,7 @@ export function HeroHeader({
             <img
               src="/MainLogo.png"
               alt=""
-              className={`main-logo-nav ${tone === "dark" ? "is-on-dark" : ""}`}
+              className="main-logo-nav is-on-dark"
             />
           </a>
         ) : (

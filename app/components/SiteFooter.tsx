@@ -166,8 +166,8 @@ export function SiteFooter() {
             <a href="tel:8660002000" className="footer-contact-line">
               866-***-2**0
             </a>
-            <a href="mailto:info@piermont.com" className="footer-contact-line">
-              info@piermont.com
+            <a href="mailto:harris@piermontstudios.com" className="footer-contact-line">
+              harris@piermontstudios.com
             </a>
           </div>
         </div>
